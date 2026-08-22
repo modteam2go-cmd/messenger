@@ -1,0 +1,172 @@
+# Canonical page URLs use /messenger with query params (?partner_id=, ?group_id=, ?compose=1)
+# so relative board menu links keep resolving at app.php depth.
+negentiendertien_messenger_roster:
+    path: /messenger
+    defaults: { _controller: negentiendertien.messenger.controller.main:roster }
+
+# Legacy path routes — redirect to query-string URLs above.
+negentiendertien_messenger_chat:
+    path: /messenger/chat/{partner_id}
+    defaults: { _controller: negentiendertien.messenger.controller.main:chat }
+    requirements:
+        partner_id: \d+
+
+negentiendertien_messenger_compose:
+    path: /messenger/compose
+    defaults: { _controller: negentiendertien.messenger.controller.main:compose }
+
+negentiendertien_messenger_group:
+    path: /messenger/group/{group_id}
+    defaults: { _controller: negentiendertien.messenger.controller.main:group }
+    requirements:
+        group_id: \d+
+
+negentiendertien_messenger_pinned:
+    path: /messenger/pinned
+    defaults: { _controller: negentiendertien.messenger.controller.main:pinned }
+
+negentiendertien_messenger_wallpaper:
+    path: /messenger/wallpaper
+    defaults: { _controller: negentiendertien.messenger.controller.main:wallpaper }
+
+negentiendertien_messenger_api_roster:
+    path: /messenger/api/roster
+    defaults: { _controller: negentiendertien.messenger.controller.api:roster }
+    methods: [GET]
+
+negentiendertien_messenger_api_chat:
+    path: /messenger/api/chat/{partner_id}
+    defaults: { _controller: negentiendertien.messenger.controller.api:chat }
+    requirements:
+        partner_id: \d+
+    methods: [GET]
+
+negentiendertien_messenger_api_send:
+    path: /messenger/api/send
+    defaults: { _controller: negentiendertien.messenger.controller.api:send }
+    methods: [POST]
+
+negentiendertien_messenger_api_send_bulk:
+    path: /messenger/api/send-bulk
+    defaults: { _controller: negentiendertien.messenger.controller.api:send_bulk }
+    methods: [POST]
+
+negentiendertien_messenger_api_wallpaper:
+    path: /messenger/api/wallpaper
+    defaults: { _controller: negentiendertien.messenger.controller.api:wallpaper_settings }
+    methods: [GET, POST]
+
+negentiendertien_messenger_api_wallpaper_upload:
+    path: /messenger/api/wallpaper/upload
+    defaults: { _controller: negentiendertien.messenger.controller.api:wallpaper_upload }
+    methods: [POST]
+
+negentiendertien_messenger_api_upload:
+    path: /messenger/api/upload
+    defaults: { _controller: negentiendertien.messenger.controller.api:upload_image }
+    methods: [POST]
+
+negentiendertien_messenger_api_read:
+    path: /messenger/api/read/{partner_id}
+    defaults: { _controller: negentiendertien.messenger.controller.api:mark_read }
+    requirements:
+        partner_id: \d+
+    methods: [POST]
+
+negentiendertien_messenger_api_poll:
+    path: /messenger/api/poll
+    defaults: { _controller: negentiendertien.messenger.controller.api:poll }
+    methods: [GET]
+
+negentiendertien_messenger_api_typing:
+    path: /messenger/api/typing
+    defaults: { _controller: negentiendertien.messenger.controller.api:typing }
+    methods: [POST]
+
+negentiendertien_messenger_api_pin_chat:
+    path: /messenger/api/pin/chat/{partner_id}
+    defaults: { _controller: negentiendertien.messenger.controller.api:pin_chat }
+    requirements:
+        partner_id: \d+
+    methods: [POST]
+
+negentiendertien_messenger_api_pin_message:
+    path: /messenger/api/pin/message/{msg_id}
+    defaults: { _controller: negentiendertien.messenger.controller.api:pin_message }
+    requirements:
+        msg_id: \d+
+    methods: [POST]
+
+negentiendertien_messenger_api_delete_message:
+    path: /messenger/api/delete/message/{msg_id}
+    defaults: { _controller: negentiendertien.messenger.controller.api:delete_message }
+    requirements:
+        msg_id: \d+
+    methods: [POST]
+
+negentiendertien_messenger_api_edit_message:
+    path: /messenger/api/edit/message/{msg_id}
+    defaults: { _controller: negentiendertien.messenger.controller.api:edit_message }
+    requirements:
+        msg_id: \d+
+    methods: [GET, POST]
+
+negentiendertien_messenger_api_delete_chat:
+    path: /messenger/api/delete/chat/{partner_id}
+    defaults: { _controller: negentiendertien.messenger.controller.api:delete_chat }
+    requirements:
+        partner_id: \d+
+    methods: [POST]
+
+negentiendertien_messenger_api_delete_chats:
+    path: /messenger/api/delete/chats
+    defaults: { _controller: negentiendertien.messenger.controller.api:delete_chats }
+    methods: [POST]
+
+negentiendertien_messenger_api_search:
+    path: /messenger/api/search
+    defaults: { _controller: negentiendertien.messenger.controller.api:search }
+    methods: [GET]
+
+negentiendertien_messenger_api_members:
+    path: /messenger/api/members
+    defaults: { _controller: negentiendertien.messenger.controller.api:members }
+    methods: [GET]
+
+negentiendertien_messenger_api_group_members:
+    path: /messenger/api/group-members
+    defaults: { _controller: negentiendertien.messenger.controller.api:group_members }
+    methods: [GET]
+
+negentiendertien_messenger_api_group_create:
+    path: /messenger/api/group/create
+    defaults: { _controller: negentiendertien.messenger.controller.api:create_group }
+    methods: [POST]
+
+negentiendertien_messenger_api_group_chat:
+    path: /messenger/api/group/{group_id}
+    defaults: { _controller: negentiendertien.messenger.controller.api:group_chat }
+    requirements:
+        group_id: \d+
+    methods: [GET]
+
+negentiendertien_messenger_api_group_send:
+    path: /messenger/api/group/{group_id}/send
+    defaults: { _controller: negentiendertien.messenger.controller.api:group_send }
+    requirements:
+        group_id: \d+
+    methods: [POST]
+
+negentiendertien_messenger_api_group_read:
+    path: /messenger/api/group/{group_id}/read
+    defaults: { _controller: negentiendertien.messenger.controller.api:group_mark_read }
+    requirements:
+        group_id: \d+
+    methods: [POST]
+
+negentiendertien_messenger_api_group_delete:
+    path: /messenger/api/group/{group_id}/delete
+    defaults: { _controller: negentiendertien.messenger.controller.api:group_delete }
+    requirements:
+        group_id: \d+
+    methods: [POST]

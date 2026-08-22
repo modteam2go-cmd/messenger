@@ -1,0 +1,65 @@
+{% INCLUDECSS '@negentiendertien_messenger/messenger.css' %}
+{% INCLUDEJS '@negentiendertien_messenger/messenger.js' %}
+{% INCLUDE 'overall_header.html' %}
+
+<div class="msgr-shell" data-msgr="roster">
+
+	<header class="msgr-header">
+		<div class="msgr-header-top">
+			<h1 class="msgr-title">{{ lang('MESSENGER_TITLE') }}</h1>
+			<span class="msgr-stats">{{ lang('MESSENGER_STATS', CHAT_COUNT, MSG_COUNT) }}</span>
+		</div>
+
+		<div class="msgr-toolbar">
+			<a href="{{ U_COMPOSE }}" class="button button-secondary msgr-btn-write">
+				<i class="icon fa-pencil fa-fw" aria-hidden="true"></i><span>{{ lang('MESSENGER_WRITE') }}</span>
+			</a>
+		<div class="msgr-search-wrap">
+			<i class="icon fa-search fa-fw" aria-hidden="true"></i>
+			<input type="search" class="msgr-search" id="msgr-search" placeholder="{{ lang('MESSENGER_SEARCH') }}" autocomplete="off" />
+		</div>
+	</div>
+	<div class="msgr-search-results" id="msgr-search-results" hidden></div>
+</header>
+
+	<!-- IF .chat_row -->
+	<ul class="msgr-roster" id="msgr-roster">
+	<!-- BEGIN chat_row -->
+		<li class="msgr-roster-item{% if chat_row.IS_PINNED %} is-pinned{% endif %}{% if chat_row.UNREAD_COUNT %} has-unread{% endif %}" data-partner-id="{{ chat_row.PARTNER_ID }}">
+			<a href="{{ chat_row.CHAT_URL }}" class="msgr-roster-link">
+				<div class="msgr-avatar-wrap">
+					{% if chat_row.AVATAR %}{{ chat_row.AVATAR }}{% else %}<span class="msgr-avatar-fallback"><i class="icon fa-user fa-fw"></i></span>{% endif %}
+					<!-- IF chat_row.IS_ONLINE --><span class="msgr-online-dot" aria-hidden="true"></span><!-- ENDIF -->
+				</div>
+				<div class="msgr-roster-body">
+					<div class="msgr-roster-meta">
+						<strong{% if chat_row.USER_COLOUR %} style="color: #{{ chat_row.USER_COLOUR }};"{% endif %}>{{ chat_row.USERNAME }}</strong>
+						<time class="msgr-time">{{ chat_row.TIME_FORMATTED }}</time>
+					</div>
+					<p class="msgr-preview">{{ chat_row.PREVIEW }}</p>
+				</div>
+				<div class="msgr-roster-side">
+					<!-- IF chat_row.IS_PINNED --><i class="icon fa-thumb-tack fa-fw msgr-pin-icon" aria-hidden="true"></i><!-- ENDIF -->
+					<!-- IF chat_row.UNREAD_COUNT --><span class="msgr-unread-badge">{{ chat_row.UNREAD_COUNT }}</span><!-- ENDIF -->
+				</div>
+			</a>
+		</li>
+	<!-- END chat_row -->
+	</ul>
+	<!-- ELSE -->
+	<div class="msgr-empty">
+		<p>{{ lang('MESSENGER_NO_CHATS') }}</p>
+	</div>
+	<!-- ENDIF -->
+
+</div>
+
+<script>
+window.MESSENGER_CONFIG = {
+	pollInterval: {{ MESSENGER_POLL_INTERVAL }},
+	apiRoster: '{{ U_MESSENGER_API_ROSTER|e('js') }}',
+	apiSearch: '{{ U_MESSENGER_API_SEARCH|e('js') }}'
+};
+</script>
+
+{% INCLUDE 'overall_footer.html' %}

@@ -1,0 +1,116 @@
+<div class="msgr-shell msgr-shell-chat msgr-shell-group" data-msgr="group" data-group-id="{{ GROUP_ID }}">
+
+	<header class="msgr-header msgr-chat-header msgr-group-header">
+		<div class="msgr-chat-topbar">
+			<a href="{{ U_ROSTER }}" class="msgr-back" aria-label="{{ lang('MESSENGER_BACK') }}"><i class="icon fa-arrow-left fa-fw"></i></a>
+			<div class="msgr-topbar-partner">
+				<div class="msgr-avatar-wrap msgr-avatar-sm">
+					<span class="msgr-avatar-fallback msgr-group-avatar"><i class="icon fa-users fa-fw"></i></span>
+				</div>
+				<div class="msgr-topbar-partner-text">
+					<strong class="msgr-topbar-name">{{ GROUP_TITLE }}</strong>
+					<span class="msgr-typing-indicator msgr-typing-indicator-header" hidden aria-live="polite"></span>
+					<span class="msgr-last-seen">{{ lang('MESSENGER_GROUP_MEMBERS', GROUP_MEMBER_COUNT) }}</span>
+				</div>
+			</div>
+			<button type="button" class="msgr-wallpaper-btn msgr-wallpaper-btn--mobile" aria-label="{{ lang('MESSENGER_WALLPAPER') }}" title="{{ lang('MESSENGER_WALLPAPER') }}">
+				<i class="icon fa-image fa-fw" aria-hidden="true"></i>
+			</button>
+		</div>
+
+		<div class="msgr-partner-card msgr-partner-details">
+			<div class="msgr-avatar-wrap msgr-avatar-lg">
+				<span class="msgr-avatar-fallback msgr-group-avatar"><i class="icon fa-users fa-fw"></i></span>
+			</div>
+			<div class="msgr-partner-info">
+				<h2>{{ GROUP_TITLE }}</h2>
+				<p class="msgr-last-seen msgr-group-members-line">{{ lang('MESSENGER_GROUP_MEMBERS', GROUP_MEMBER_COUNT) }}: {{ GROUP_MEMBERS }}</p>
+				<span class="msgr-typing-indicator msgr-typing-indicator-header" hidden aria-live="polite"></span>
+				<span class="msgr-stats">{{ lang('MESSENGER_MSG_COUNT', MSG_TOTAL) }}</span>
+			</div>
+			<button type="button" class="msgr-wallpaper-btn msgr-wallpaper-btn--desktop" aria-label="{{ lang('MESSENGER_WALLPAPER') }}" title="{{ lang('MESSENGER_WALLPAPER') }}">
+				<i class="icon fa-image fa-fw" aria-hidden="true"></i>
+			</button>
+		</div>
+	</header>
+
+	<div class="msgr-messages" id="msgr-messages">
+		<!-- IF S_HAS_OLDER -->
+		<div class="msgr-load-older" id="msgr-load-older">
+			<button type="button" class="button button-secondary msgr-load-older-btn" id="msgr-load-older-btn">
+				<i class="icon fa-chevron-up fa-fw" aria-hidden="true"></i>
+				<span>{{ lang('MESSENGER_LOAD_OLDER') }}</span>
+			</button>
+		</div>
+		<!-- ENDIF -->
+
+	<!-- BEGIN message_row -->
+		<div class="msgr-message{% if message_row.S_IS_OWN %} is-own{% else %} is-other{% endif %}" id="p{{ message_row.MSG_ID }}" data-msg-id="{{ message_row.MSG_ID }}" data-author-name="{{ message_row.AUTHOR_NAME|e('html_attr') }}" data-message-plain="{{ message_row.MESSAGE_PLAIN|e('html_attr') }}">
+			<div class="msgr-bubble">
+				<!-- IF not message_row.S_IS_OWN -->
+				<div class="msgr-bubble-author">{{ message_row.AUTHOR_NAME }}</div>
+				<!-- ENDIF -->
+				<div class="msgr-bubble-content">{{ message_row.MESSAGE }}</div>
+				<footer class="msgr-bubble-footer">
+					<time data-ts="{{ message_row.MESSAGE_TIME }}">{{ message_row.TIME }}</time>
+				</footer>
+			</div>
+		</div>
+	<!-- END message_row -->
+	</div>
+
+	<form class="msgr-compose" id="msgr-compose-form" autocomplete="off">
+		<div class="msgr-compose-tools-panel" id="msgr-compose-tools-panel">
+			<div class="msgr-compose-tools">
+				<button type="button" class="msgr-tool-btn" data-bbcode="b" title="Bold"><i class="icon fa-bold fa-fw"></i></button>
+				<button type="button" class="msgr-tool-btn" data-bbcode="i" title="Italic"><i class="icon fa-italic fa-fw"></i></button>
+				<button type="button" class="msgr-tool-btn" data-bbcode="url" title="Link"><i class="icon fa-link fa-fw"></i></button>
+				<button type="button" class="msgr-tool-btn" data-bbcode="quote" title="Quote"><i class="icon fa-quote-left fa-fw"></i></button>
+				<button type="button" class="msgr-tool-btn" data-bbcode="img" title="Image"><i class="icon fa-image fa-fw"></i></button>
+			</div>
+		</div>
+
+		<div class="msgr-emoji-panel" id="msgr-emoji-panel" hidden></div>
+
+		<!-- IF S_MESSENGER_GIPHY -->
+		<div class="msgr-giphy-panel" id="msgr-giphy-panel" hidden>
+			<div class="msgr-giphy-toolbar">
+				<div class="msgr-giphy-modes">
+					<button type="button" class="msgr-giphy-mode is-active" data-giphy-mode="gifs">{{ lang('MESSENGER_GIPHY_GIFS') }}</button>
+					<button type="button" class="msgr-giphy-mode" data-giphy-mode="stickers">{{ lang('MESSENGER_GIPHY_STICKERS') }}</button>
+				</div>
+				<div class="msgr-giphy-search-row">
+					<input type="search" class="msgr-giphy-search" id="msgr-giphy-search" placeholder="{{ lang('MESSENGER_GIPHY_SEARCH') }}" autocomplete="off" spellcheck="false" />
+					<button type="button" class="msgr-giphy-nav" id="msgr-giphy-less" title="{{ lang('MESSENGER_GIPHY_LESS') }}" hidden>
+						<i class="icon fa-minus fa-fw" aria-hidden="true"></i>
+					</button>
+					<button type="button" class="msgr-giphy-nav" id="msgr-giphy-more" title="{{ lang('MESSENGER_GIPHY_MORE') }}" hidden>
+						<i class="icon fa-plus fa-fw" aria-hidden="true"></i>
+					</button>
+				</div>
+			</div>
+			<div class="msgr-giphy-viewport" id="msgr-giphy-viewport"></div>
+		</div>
+		<!-- ENDIF -->
+
+		<div class="msgr-compose-typing" hidden aria-live="polite"></div>
+		<div class="msgr-compose-row">
+			<button type="button" class="msgr-attach-btn" id="msgr-attach-btn" aria-label="{{ lang('MESSENGER_ATTACH') }}" aria-expanded="false" aria-controls="msgr-compose-tools-panel" hidden>
+				<i class="icon fa-paperclip fa-fw" aria-hidden="true"></i>
+			</button>
+			<button type="button" class="msgr-emoji-btn" id="msgr-emoji-btn" aria-label="{{ lang('MESSENGER_EMOJI') }}" aria-expanded="false" aria-controls="msgr-emoji-panel" hidden>
+				<i class="icon fa-smile-o fa-fw" aria-hidden="true"></i>
+			</button>
+			<!-- IF S_MESSENGER_GIPHY -->
+			<button type="button" class="msgr-giphy-btn" id="msgr-giphy-btn" aria-label="{{ lang('MESSENGER_GIPHY') }}" aria-expanded="false" aria-controls="msgr-giphy-panel">
+				<span class="msgr-giphy-btn-label">GIF</span>
+			</button>
+			<!-- ENDIF -->
+			<textarea class="msgr-input" id="msgr-input" rows="1" placeholder="{{ lang('MESSENGER_PLACEHOLDER') }}"></textarea>
+			<button type="submit" class="msgr-send-btn" aria-label="{{ lang('MESSENGER_SEND') }}">
+				<span class="msgr-send-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false"><path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z"/></svg></span><span class="msgr-send-label">{{ lang('MESSENGER_SEND') }}</span>
+			</button>
+		</div>
+	</form>
+
+</div>

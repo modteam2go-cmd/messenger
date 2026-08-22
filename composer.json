@@ -1,0 +1,25 @@
+{
+    "name": "negentiendertien/messenger",
+    "type": "phpbb-extension",
+    "description": "Modern messenger-style private messaging for phpBB 3.3. Adds group chats with bell notifications and live relative message timestamps that automatically update to show how old each message is.",
+    "version": "0.2.4-dev",
+    "time": "2026-06-09 21:30:00",
+    "keywords": ["phpbb", "extension", "messenger", "pm", "private messages"],
+    "license": "GPL-2.0-only",
+    "authors": [
+        {
+            "name": "negentiendertien",
+            "role": "Lead Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+        "composer/installers": "~2.0"
+    },
+    "extra": {
+        "display-name": "Messenger",
+        "soft-require": {
+            "phpbb/phpbb": ">=3.3.0,<4.0.0@dev"
+        }
+    }
+}

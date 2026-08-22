@@ -1,0 +1,56 @@
+{% if S_MESSENGER %}
+<script>
+(function () {
+	document.documentElement.classList.add('msgr-page');
+
+	var indexUrl = '{{ U_INDEX|e('js') }}';
+	var homeTitle = '{{ lang('MESSENGER_FORUM_HOME')|e('js') }}';
+
+	function updateMessengerHomeLink() {
+		var existing = document.getElementById('msgr-forum-home');
+		var legacy = document.getElementById('msgr-forum-home-item');
+		var isMobile = window.matchMedia('(max-width: 700px)').matches;
+
+		if (legacy && legacy.parentNode) {
+			legacy.parentNode.removeChild(legacy);
+		}
+
+		if (!isMobile) {
+			if (existing && existing.parentNode) {
+				existing.parentNode.removeChild(existing);
+			}
+			return;
+		}
+
+		if (existing && existing.parentNode) {
+			existing.parentNode.removeChild(existing);
+		}
+
+		var darkLink = document.getElementById('dark_toggle_link');
+		var refLi = darkLink ? darkLink.closest('li') : null;
+		var nav = document.getElementById('nav-main');
+
+		if (!nav) {
+			return;
+		}
+
+		var li = document.createElement('li');
+		li.className = 'rightside msgr-forum-home';
+		li.id = 'msgr-forum-home';
+		li.setAttribute('data-skip-responsive', 'true');
+		li.innerHTML = '<a href="' + indexUrl + '" role="menuitem" title="' + homeTitle + '">' +
+			'<i class="icon fa-home fa-fw" aria-hidden="true"></i>' +
+			'<span class="sr-only">' + homeTitle + '</span></a>';
+
+		if (refLi && refLi.parentNode) {
+			refLi.parentNode.insertBefore(li, refLi.nextSibling);
+		} else {
+			nav.appendChild(li);
+		}
+	}
+
+	updateMessengerHomeLink();
+	window.addEventListener('resize', updateMessengerHomeLink);
+})();
+</script>
+{% endif %}

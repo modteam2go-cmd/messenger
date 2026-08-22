@@ -1,0 +1,112 @@
+<header class="msgr-header msgr-sidebar-header">
+
+	<div class="msgr-header-top">
+
+		<h1 class="msgr-title">{{ lang('MESSENGER_TITLE') }}</h1>
+
+		<span class="msgr-stats">{{ lang('MESSENGER_STATS', CHAT_COUNT, MSG_COUNT) }}</span>
+
+	</div>
+
+
+
+	<div class="msgr-toolbar">
+
+		<a href="{{ U_COMPOSE }}" class="button button-secondary msgr-btn-write">
+
+			<i class="icon fa-pencil fa-fw" aria-hidden="true"></i><span>{{ lang('MESSENGER_WRITE') }}</span>
+
+		</a>
+
+		<button type="button" class="button button-secondary msgr-btn-select" id="msgr-roster-select-toggle" aria-pressed="false" title="{{ lang('MESSENGER_SELECT_CHATS') }}">
+
+			<i class="icon fa-check-square-o fa-fw" aria-hidden="true"></i><span class="msgr-btn-select-label">{{ lang('MESSENGER_SELECT_CHATS') }}</span>
+
+		</button>
+
+		<div class="msgr-search-wrap">
+			<i class="icon fa-search fa-fw" aria-hidden="true"></i>
+			<input type="search" class="msgr-search" id="msgr-search" placeholder="{{ lang('MESSENGER_SEARCH') }}" autocomplete="off" />
+		</div>
+	</div>
+	<div class="msgr-roster-select-bar" id="msgr-roster-select-bar" hidden>
+		<span class="msgr-roster-select-count" id="msgr-roster-select-count">{{ lang('MESSENGER_SELECTED_COUNT', 0) }}</span>
+		<button type="button" class="button button-secondary msgr-btn-select-cancel" id="msgr-roster-select-cancel">{{ lang('MESSENGER_CANCEL') }}</button>
+		<button type="button" class="button msgr-btn-select-delete is-danger" id="msgr-roster-select-delete" disabled>{{ lang('MESSENGER_DELETE_SELECTED') }}</button>
+	</div>
+	<div class="msgr-search-results" id="msgr-search-results" hidden></div>
+</header>
+
+
+
+<!-- IF .chat_row -->
+
+<ul class="msgr-roster" id="msgr-roster">
+
+<!-- BEGIN chat_row -->
+
+	<li class="msgr-roster-item{% if chat_row.IS_PINNED %} is-pinned{% endif %}{% if chat_row.UNREAD_COUNT %} has-unread{% endif %}{% if chat_row.S_IS_ACTIVE %} is-active{% endif %}{% if chat_row.S_IS_GROUP %} is-group{% endif %}"{% if chat_row.S_IS_GROUP %} data-group-id="{{ chat_row.GROUP_ID }}" data-chat-type="group"{% else %} data-partner-id="{{ chat_row.PARTNER_ID }}" data-chat-type="direct"{% endif %}>
+
+		<label class="msgr-roster-check" hidden>
+			<input type="checkbox" class="msgr-roster-checkbox" tabindex="-1" />
+			<span class="msgr-roster-check-box" aria-hidden="true"></span>
+		</label>
+
+		<a href="{{ chat_row.CHAT_URL }}" class="msgr-roster-link">
+
+			<div class="msgr-avatar-wrap">
+
+				<!-- IF chat_row.S_IS_GROUP -->
+				<span class="msgr-avatar-fallback msgr-group-avatar"><i class="icon fa-users fa-fw"></i></span>
+				<!-- ELSE -->
+				{% if chat_row.AVATAR %}{{ chat_row.AVATAR }}{% else %}<span class="msgr-avatar-fallback"><i class="icon fa-user fa-fw"></i></span>{% endif %}
+				<!-- IF chat_row.IS_ONLINE --><span class="msgr-online-dot" aria-hidden="true"></span><!-- ENDIF -->
+				<!-- ENDIF -->
+
+			</div>
+
+			<div class="msgr-roster-body">
+
+				<div class="msgr-roster-meta">
+
+					<strong{% if chat_row.USER_COLOUR %} style="color: #{{ chat_row.USER_COLOUR }};"{% endif %}>{{ chat_row.USERNAME }}</strong>
+
+					<time class="msgr-time" data-ts="{{ chat_row.LAST_TIME }}">{{ chat_row.TIME_FORMATTED }}</time>
+
+				</div>
+
+				<p class="msgr-preview">{{ chat_row.PREVIEW }}</p>
+
+			</div>
+
+			<div class="msgr-roster-side">
+
+				<!-- IF chat_row.IS_PINNED --><i class="icon fa-thumb-tack fa-fw msgr-pin-icon" aria-hidden="true"></i><!-- ENDIF -->
+
+				<!-- IF chat_row.UNREAD_COUNT --><span class="msgr-unread-badge">{{ chat_row.UNREAD_COUNT }}</span><!-- ENDIF -->
+
+			</div>
+
+		</a>
+
+		<button type="button" class="msgr-roster-menu-btn" aria-label="{{ lang('MESSENGER_CHAT_ACTIONS') }}" aria-haspopup="menu">
+
+			<i class="icon fa-ellipsis-v fa-fw" aria-hidden="true"></i>
+
+		</button>
+
+	</li>
+
+<!-- END chat_row -->
+
+</ul>
+
+<!-- ELSE -->
+
+<div class="msgr-empty msgr-empty-sidebar">
+
+	<p>{{ lang('MESSENGER_NO_CHATS') }}</p>
+
+</div>
+
+<!-- ENDIF -->

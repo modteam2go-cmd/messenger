@@ -1,0 +1,202 @@
+services:
+    negentiendertien.messenger.service.attachment:
+        class: negentiendertien\messenger\service\attachment_service
+        arguments:
+            - '@dbal.conn'
+            - '@config'
+            - '@user'
+            - '@auth'
+            - '@language'
+            - '@controller.helper'
+            - '@request'
+            - '%core.table_prefix%'
+
+    negentiendertien.messenger.service.conversation:
+        class: negentiendertien\messenger\service\conversation_service
+        arguments:
+            - '@dbal.conn'
+            - '@config'
+            - '@user'
+            - '@auth'
+            - '@avatar.manager'
+            - '@negentiendertien.messenger.service.pin'
+            - '@negentiendertien.messenger.service.attachment'
+            - '%core.table_prefix%'
+
+    negentiendertien.messenger.service.message:
+        class: negentiendertien\messenger\service\message_service
+        arguments:
+            - '@dbal.conn'
+            - '@config'
+            - '@user'
+            - '@auth'
+            - '@language'
+            - '@negentiendertien.messenger.service.conversation'
+            - '@negentiendertien.messenger.service.search'
+            - '@negentiendertien.messenger.service.attachment'
+            - '@notification_manager'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '%core.table_prefix%'
+
+    negentiendertien.messenger.service.pin:
+        class: negentiendertien\messenger\service\pin_service
+        arguments:
+            - '@dbal.conn'
+            - '%core.table_prefix%'
+
+    negentiendertien.messenger.service.search:
+        class: negentiendertien\messenger\service\search_service
+        arguments:
+            - '@dbal.conn'
+            - '@config'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '%core.table_prefix%'
+
+    negentiendertien.messenger.service.member:
+        class: negentiendertien\messenger\service\member_service
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '@auth'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '%core.table_prefix%'
+
+    negentiendertien.messenger.service.smiley:
+        class: negentiendertien\messenger\service\smiley_service
+        arguments:
+            - '@dbal.conn'
+            - '@config'
+            - '@path_helper'
+            - '%core.table_prefix%'
+
+    negentiendertien.messenger.service.group:
+        class: negentiendertien\messenger\service\group_service
+        arguments:
+            - '@dbal.conn'
+            - '@config'
+            - '@user'
+            - '@auth'
+            - '@language'
+            - '@notification_manager'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '%core.table_prefix%'
+
+    negentiendertien.messenger.service.typing:
+        class: negentiendertien\messenger\service\typing_service
+        arguments:
+            - '@cache.driver'
+
+    negentiendertien.messenger.service.user_settings:
+        class: negentiendertien\messenger\service\user_settings_service
+        arguments:
+            - '@dbal.conn'
+            - '@user'
+            - '%core.table_prefix%'
+            - '%core.root_path%'
+
+    negentiendertien.messenger.service.route:
+        class: negentiendertien\messenger\service\route_helper
+        arguments:
+            - '@config'
+            - '@controller.helper'
+            - '@dbal.conn'
+            - '%core.root_path%'
+            - '%core.php_ext%'
+            - '%core.table_prefix%'
+
+    negentiendertien.messenger.service.ucp_module:
+        class: negentiendertien\messenger\service\ucp_module_installer
+        arguments:
+            - '@dbal.conn'
+            - '@migrator.tool.module'
+            - '@module.manager'
+            - '%core.table_prefix%'
+
+    negentiendertien.messenger.service.display:
+        class: negentiendertien\messenger\service\display_service
+        arguments:
+            - '@config'
+            - '@controller.helper'
+            - '@language'
+            - '@request'
+            - '@template'
+            - '@user'
+            - '@negentiendertien.messenger.service.conversation'
+            - '@negentiendertien.messenger.service.message'
+            - '@negentiendertien.messenger.service.member'
+            - '@negentiendertien.messenger.service.smiley'
+            - '@negentiendertien.messenger.service.group'
+            - '@negentiendertien.messenger.service.user_settings'
+            - '@negentiendertien.messenger.service.route'
+
+    negentiendertien.messenger.listener:
+        class: negentiendertien\messenger\event\main_listener
+        arguments:
+            - '@config'
+            - '@controller.helper'
+            - '@template'
+            - '@user'
+            - '@auth'
+            - '@request'
+            - '@language'
+            - '@negentiendertien.messenger.service.message'
+            - '@negentiendertien.messenger.service.route'
+        tags:
+            - { name: event.listener }
+
+    negentiendertien.messenger.controller.main:
+        class: negentiendertien\messenger\controller\main_controller
+        arguments:
+            - '@controller.helper'
+            - '@language'
+            - '@request'
+            - '@user'
+            - '@negentiendertien.messenger.service.display'
+            - '@negentiendertien.messenger.service.route'
+            - '@negentiendertien.messenger.service.message'
+            - '@negentiendertien.messenger.service.user_settings'
+
+    negentiendertien.messenger.controller.api:
+        class: negentiendertien\messenger\controller\api_controller
+        arguments:
+            - '@config'
+            - '@controller.helper'
+            - '@language'
+            - '@request'
+            - '@user'
+            - '@auth'
+            - '@negentiendertien.messenger.service.conversation'
+            - '@negentiendertien.messenger.service.message'
+            - '@negentiendertien.messenger.service.attachment'
+            - '@negentiendertien.messenger.service.pin'
+            - '@negentiendertien.messenger.service.search'
+            - '@negentiendertien.messenger.service.member'
+            - '@negentiendertien.messenger.service.group'
+            - '@negentiendertien.messenger.service.typing'
+            - '@negentiendertien.messenger.service.user_settings'
+            - '@negentiendertien.messenger.service.route'
+            - '@notification_manager'
+
+    notification.type.pm:
+        class: negentiendertien\messenger\notification\type\pm
+        shared: false
+        parent: notification.type.base
+        calls:
+            - [set_user_loader, ['@user_loader']]
+            - [set_config, ['@config']]
+        tags:
+            - { name: notification.type }
+
+    negentiendertien.messenger.notification.type.group_message:
+        class: negentiendertien\messenger\notification\type\group_message
+        shared: false
+        parent: notification.type.base
+        calls:
+            - [set_user_loader, ['@user_loader']]
+            - [set_config, ['@config']]
+        tags:
+            - { name: notification.type }

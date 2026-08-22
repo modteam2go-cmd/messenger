@@ -1,0 +1,197 @@
+<div class="msgr-shell msgr-shell-compose" data-msgr="compose">
+
+
+
+	<header class="msgr-header msgr-compose-header">
+
+		<div class="msgr-breadcrumb">
+
+			<a href="{{ U_ROSTER }}" class="msgr-back"><i class="icon fa-arrow-left fa-fw"></i></a>
+
+			<h2 class="msgr-compose-title">{{ lang('MESSENGER_COMPOSE') }}</h2>
+
+		</div>
+
+	</header>
+
+
+
+	<div class="msgr-compose-page">
+
+		<div class="msgr-compose-tabs" role="tablist">
+
+			<button type="button" class="msgr-compose-tab is-active" data-compose-tab="direct" role="tab" aria-selected="true">{{ lang('MESSENGER_COMPOSE_DIRECT') }}</button>
+
+			<button type="button" class="msgr-compose-tab" data-compose-tab="multiple" role="tab" aria-selected="false">{{ lang('MESSENGER_COMPOSE_MULTIPLE') }}</button>
+
+			<!-- IF S_MESSENGER_GROUP_CHAT -->
+
+			<button type="button" class="msgr-compose-tab" data-compose-tab="group" role="tab" aria-selected="false">{{ lang('MESSENGER_COMPOSE_GROUP') }}</button>
+
+			<!-- ENDIF -->
+
+		</div>
+
+
+
+		<div class="msgr-compose-panel is-active" id="msgr-compose-direct" data-compose-panel="direct">
+
+			<label class="msgr-compose-label" for="msgr-member-query">{{ lang('MESSENGER_COMPOSE_TO') }}</label>
+
+
+
+			<div class="msgr-member-picker" id="msgr-member-picker">
+
+				<div class="msgr-member-input-wrap">
+
+					<i class="icon fa-user fa-fw" aria-hidden="true"></i>
+
+					<input type="search" class="msgr-member-query" id="msgr-member-query" placeholder="{{ lang('MESSENGER_COMPOSE_PLACEHOLDER') }}" autocomplete="off" spellcheck="false" />
+
+				</div>
+
+
+
+				<ul class="msgr-member-suggestions" id="msgr-member-suggestions" hidden></ul>
+
+
+
+				<div class="msgr-member-selected" id="msgr-member-selected" hidden>
+
+					<div class="msgr-member-selected-card">
+
+						<div class="msgr-avatar-wrap" id="msgr-member-selected-avatar"></div>
+
+						<strong id="msgr-member-selected-name"></strong>
+
+						<button type="button" class="msgr-member-clear" id="msgr-member-clear" title="{{ lang('MESSENGER_COMPOSE_CLEAR') }}">
+
+							<i class="icon fa-times fa-fw" aria-hidden="true"></i>
+
+						</button>
+
+					</div>
+
+				</div>
+
+			</div>
+
+
+
+			<p class="msgr-compose-hint">{{ lang('MESSENGER_COMPOSE_HINT_SHORT') }}</p>
+
+
+
+			<button type="button" class="button button-secondary msgr-start-chat-btn" id="msgr-start-chat" disabled>
+
+				<i class="icon fa-comment fa-fw" aria-hidden="true"></i>
+
+				<span>{{ lang('MESSENGER_COMPOSE_START') }}</span>
+
+			</button>
+
+		</div>
+
+
+
+		<div class="msgr-compose-panel" id="msgr-compose-multiple" data-compose-panel="multiple" hidden>
+
+			<label class="msgr-compose-label" for="msgr-bulk-member-query">{{ lang('MESSENGER_COMPOSE_MULTIPLE_TO') }}</label>
+
+			<p class="msgr-compose-hint">{{ lang('MESSENGER_COMPOSE_MULTIPLE_HINT') }}</p>
+
+
+
+			<div class="msgr-member-picker" id="msgr-bulk-member-picker">
+
+				<div class="msgr-member-input-wrap">
+
+					<i class="icon fa-users fa-fw" aria-hidden="true"></i>
+
+					<input type="search" class="msgr-member-query" id="msgr-bulk-member-query" placeholder="{{ lang('MESSENGER_COMPOSE_PLACEHOLDER') }}" autocomplete="off" spellcheck="false" />
+
+				</div>
+
+				<ul class="msgr-member-suggestions" id="msgr-bulk-member-suggestions" hidden></ul>
+
+			</div>
+
+
+
+			<ul class="msgr-group-selected-list" id="msgr-bulk-selected-list"></ul>
+
+
+
+			<label class="msgr-compose-label" for="msgr-bulk-message">{{ lang('MESSENGER_COMPOSE_MULTIPLE_MESSAGE') }}</label>
+
+			<textarea class="msgr-bulk-message" id="msgr-bulk-message" rows="5" placeholder="{{ lang('MESSENGER_PLACEHOLDER') }}"></textarea>
+
+
+
+			<button type="button" class="button button-secondary msgr-start-chat-btn" id="msgr-send-bulk" disabled>
+
+				<i class="icon fa-paper-plane fa-fw" aria-hidden="true"></i>
+
+				<span>{{ lang('MESSENGER_COMPOSE_MULTIPLE_SEND') }}</span>
+
+			</button>
+
+		</div>
+
+
+
+		<!-- IF S_MESSENGER_GROUP_CHAT -->
+
+		<div class="msgr-compose-panel" id="msgr-compose-group" data-compose-panel="group" hidden>
+
+			<label class="msgr-compose-label" for="msgr-group-title">{{ lang('MESSENGER_GROUP_TITLE') }} <span class="msgr-compose-optional">{{ lang('MESSENGER_OPTIONAL') }}</span></label>
+
+			<input type="text" class="msgr-group-title-input" id="msgr-group-title" maxlength="255" placeholder="{{ lang('MESSENGER_GROUP_TITLE_PLACEHOLDER') }}" />
+
+
+
+			<label class="msgr-compose-label" for="msgr-group-member-query">{{ lang('MESSENGER_GROUP_ADD_MEMBERS') }}</label>
+
+			<p class="msgr-compose-hint">{{ lang('MESSENGER_GROUP_MEMBERS_HINT') }}</p>
+
+
+
+			<div class="msgr-member-picker" id="msgr-group-member-picker">
+
+				<div class="msgr-member-input-wrap">
+
+					<i class="icon fa-users fa-fw" aria-hidden="true"></i>
+
+					<input type="search" class="msgr-member-query" id="msgr-group-member-query" placeholder="{{ lang('MESSENGER_GROUP_MEMBER_PLACEHOLDER') }}" autocomplete="off" spellcheck="false" />
+
+				</div>
+
+				<ul class="msgr-member-suggestions" id="msgr-group-member-suggestions" hidden></ul>
+
+			</div>
+
+
+
+			<ul class="msgr-group-selected-list" id="msgr-group-selected-list"></ul>
+
+
+
+			<button type="button" class="button button-secondary msgr-start-chat-btn" id="msgr-start-group" disabled>
+
+				<i class="icon fa-users fa-fw" aria-hidden="true"></i>
+
+				<span>{{ lang('MESSENGER_GROUP_START') }}</span>
+
+			</button>
+
+		</div>
+
+		<!-- ENDIF -->
+
+	</div>
+
+
+
+</div>
+
+

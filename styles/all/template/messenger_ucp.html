@@ -1,0 +1,76 @@
+{% INCLUDECSS '@negentiendertien_messenger/messenger.css' %}
+{% INCLUDEJS '@negentiendertien_messenger/messenger.js' %}
+
+{% INCLUDE 'ucp_header.html' %}
+{% INCLUDE '@negentiendertien_messenger/messenger_forum_home_nav.html' %}
+
+<div class="msgr-ucp-wrap">
+	<div class="msgr-app{% if S_MESSENGER_CHAT %} has-chat{% elseif S_MESSENGER_GROUP %} has-chat{% elseif S_MESSENGER_COMPOSE %} has-compose{% endif %}" data-msgr-app>
+
+		<aside class="msgr-sidebar" aria-label="{{ lang('MESSENGER_TITLE') }}">
+			{% INCLUDE '@negentiendertien_messenger/messenger_roster_panel.html' %}
+		</aside>
+
+		<div class="msgr-main">
+			<!-- IF S_MESSENGER_CHAT -->
+				{% INCLUDE '@negentiendertien_messenger/messenger_chat_panel.html' %}
+			<!-- ELSEIF S_MESSENGER_GROUP -->
+				{% INCLUDE '@negentiendertien_messenger/messenger_group_panel.html' %}
+			<!-- ELSE -->
+				<!-- IF S_MESSENGER_COMPOSE -->
+					{% INCLUDE '@negentiendertien_messenger/messenger_compose_panel.html' %}
+				<!-- ELSE -->
+				<div class="msgr-main-empty">
+					<div class="msgr-main-empty-inner">
+						<i class="icon fa-comments fa-3x" aria-hidden="true"></i>
+						<p>{{ lang('MESSENGER_SELECT_CHAT') }}</p>
+					</div>
+				</div>
+				<!-- ENDIF -->
+			<!-- ENDIF -->
+		</div>
+
+	</div>
+</div>
+
+<div class="msgr-actions-backdrop" id="msgr-actions-backdrop" hidden></div>
+<div class="msgr-roster-dropdown" id="msgr-roster-dropdown" role="menu" hidden></div>
+<div class="msgr-roster-sheet" id="msgr-roster-sheet" role="menu" hidden>
+	<div class="msgr-roster-sheet-handle" aria-hidden="true"></div>
+	<div class="msgr-roster-sheet-title" id="msgr-roster-sheet-title"></div>
+	<div class="msgr-roster-sheet-actions" id="msgr-roster-sheet-actions"></div>
+</div>
+<div class="msgr-modal" id="msgr-delete-modal" hidden>
+	<div class="msgr-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="msgr-delete-modal-title">
+		<h3 class="msgr-modal-title" id="msgr-delete-modal-title"></h3>
+		<div class="msgr-modal-actions">
+			<button type="button" class="button button-secondary" id="msgr-delete-cancel"></button>
+			<button type="button" class="button button-secondary msgr-btn-danger" id="msgr-delete-me"></button>
+			<button type="button" class="button button-secondary msgr-btn-danger" id="msgr-delete-both"{% if not S_MESSENGER_ALLOW_DELETE_BOTH %} hidden{% endif %}></button>
+		</div>
+	</div>
+</div>
+<div class="msgr-toast" id="msgr-toast" hidden></div>
+<div class="msgr-image-lightbox" id="msgr-image-lightbox" hidden>
+	<button type="button" class="msgr-image-lightbox-close" id="msgr-image-lightbox-close" aria-label="{{ lang('MESSENGER_CANCEL') }}">&times;</button>
+	<img src="" alt="" id="msgr-image-lightbox-img" class="msgr-image-lightbox-img">
+</div>
+<div class="msgr-modal" id="msgr-wallpaper-modal" hidden>
+	<div class="msgr-modal-dialog msgr-wallpaper-dialog" role="dialog" aria-modal="true" aria-labelledby="msgr-wallpaper-modal-title">
+		<h3 class="msgr-modal-title" id="msgr-wallpaper-modal-title">{{ lang('MESSENGER_WALLPAPER_TITLE') }}</h3>
+		<p class="msgr-compose-hint">{{ lang('MESSENGER_WALLPAPER_HINT') }}</p>
+		<div class="msgr-wallpaper-grid" id="msgr-wallpaper-grid"></div>
+		<div class="msgr-wallpaper-actions">
+			<label class="button button-secondary msgr-wallpaper-upload-btn" for="msgr-wallpaper-upload-input">
+				<i class="icon fa-upload fa-fw" aria-hidden="true"></i>
+				<span>{{ lang('MESSENGER_WALLPAPER_UPLOAD') }}</span>
+			</label>
+			<input type="file" id="msgr-wallpaper-upload-input" class="msgr-upload-input-native" accept="image/*" tabindex="-1">
+			<button type="button" class="button button-secondary" id="msgr-wallpaper-close">{{ lang('MESSENGER_CANCEL') }}</button>
+		</div>
+	</div>
+</div>
+
+{% INCLUDE '@negentiendertien_messenger/messenger_config.html' %}
+
+{% INCLUDE 'ucp_footer.html' %}

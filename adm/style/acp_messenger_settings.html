@@ -1,0 +1,86 @@
+{% INCLUDE 'overall_header.html' %}
+
+<h1>{L_ACP_MESSENGER_TITLE}</h1>
+
+<form id="acp_messenger" method="post" action="{U_ACTION}">
+
+	<fieldset>
+		<legend>{L_ACP_MESSENGER_GENERAL}</legend>
+		<dl>
+			<dt><label for="messenger_enabled">{L_ACP_MESSENGER_ENABLED}{L_COLON}</label><br /><span>{L_ACP_MESSENGER_ENABLED_EXPLAIN}</span></dt>
+			<dd><label><input type="radio" name="messenger_enabled" id="messenger_enabled" value="1"{% if S_MESSENGER_ENABLED %} checked="checked"{% endif %} /> {L_YES}</label>
+				<label><input type="radio" name="messenger_enabled" value="0"{% if not S_MESSENGER_ENABLED %} checked="checked"{% endif %} /> {L_NO}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="messenger_poll_interval">{L_ACP_MESSENGER_POLL_INTERVAL}{L_COLON}</label><br /><span>{L_ACP_MESSENGER_POLL_INTERVAL_EXPLAIN}</span></dt>
+			<dd><input type="number" name="messenger_poll_interval" id="messenger_poll_interval" value="{MESSENGER_POLL_INTERVAL}" min="3" max="60" /></dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<legend>{L_ACP_MESSENGER_BEHAVIOUR}</legend>
+		<dl>
+			<dt><label for="messenger_allow_edit_after_read">{L_ACP_MESSENGER_ALLOW_EDIT}{L_COLON}</label></dt>
+			<dd><label><input type="radio" name="messenger_allow_edit_after_read" id="messenger_allow_edit_after_read" value="1"{% if S_MESSENGER_ALLOW_EDIT_AFTER_READ %} checked="checked"{% endif %} /> {L_YES}</label>
+				<label><input type="radio" name="messenger_allow_edit_after_read" value="0"{% if not S_MESSENGER_ALLOW_EDIT_AFTER_READ %} checked="checked"{% endif %} /> {L_NO}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="messenger_allow_delete_for_both">{L_ACP_MESSENGER_ALLOW_DELETE_BOTH}{L_COLON}</label></dt>
+			<dd><label><input type="radio" name="messenger_allow_delete_for_both" id="messenger_allow_delete_for_both" value="1"{% if S_MESSENGER_ALLOW_DELETE_FOR_BOTH %} checked="checked"{% endif %} /> {L_YES}</label>
+				<label><input type="radio" name="messenger_allow_delete_for_both" value="0"{% if not S_MESSENGER_ALLOW_DELETE_FOR_BOTH %} checked="checked"{% endif %} /> {L_NO}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="messenger_visible_pm_link">{L_ACP_MESSENGER_VISIBLE_PM_LINK}{L_COLON}</label></dt>
+			<dd><label><input type="radio" name="messenger_visible_pm_link" id="messenger_visible_pm_link" value="1"{% if S_MESSENGER_VISIBLE_PM_LINK %} checked="checked"{% endif %} /> {L_YES}</label>
+				<label><input type="radio" name="messenger_visible_pm_link" value="0"{% if not S_MESSENGER_VISIBLE_PM_LINK %} checked="checked"{% endif %} /> {L_NO}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="messenger_ucp_mode">{L_ACP_MESSENGER_UCP_MODE}{L_COLON}</label><br /><span>{L_ACP_MESSENGER_UCP_MODE_EXPLAIN}</span></dt>
+			<dd><label><input type="radio" name="messenger_ucp_mode" id="messenger_ucp_mode" value="1"{% if S_MESSENGER_UCP_MODE %} checked="checked"{% endif %} /> {L_YES}</label>
+				<label><input type="radio" name="messenger_ucp_mode" value="0"{% if not S_MESSENGER_UCP_MODE %} checked="checked"{% endif %} /> {L_NO}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="messenger_show_header_footer">{L_ACP_MESSENGER_SHOW_HEADER_FOOTER}{L_COLON}</label><br /><span>{L_ACP_MESSENGER_SHOW_HEADER_FOOTER_EXPLAIN}</span></dt>
+			<dd><label><input type="radio" name="messenger_show_header_footer" id="messenger_show_header_footer" value="1"{% if S_MESSENGER_SHOW_HEADER_FOOTER %} checked="checked"{% endif %} /> {L_YES}</label>
+				<label><input type="radio" name="messenger_show_header_footer" value="0"{% if not S_MESSENGER_SHOW_HEADER_FOOTER %} checked="checked"{% endif %} /> {L_NO}</label></dd>
+		</dl>
+	</fieldset>
+
+	<fieldset>
+		<legend>{L_ACP_MESSENGER_GROUP_CHAT}</legend>
+		<dl>
+			<dt><label for="messenger_group_chat_enabled">{L_ACP_MESSENGER_GROUP_CHAT_ENABLED}{L_COLON}</label><br /><span>{L_ACP_MESSENGER_GROUP_CHAT_ENABLED_EXPLAIN}</span></dt>
+			<dd><label><input type="radio" name="messenger_group_chat_enabled" id="messenger_group_chat_enabled" value="1"{% if S_MESSENGER_GROUP_CHAT_ENABLED %} checked="checked"{% endif %} /> {L_YES}</label>
+				<label><input type="radio" name="messenger_group_chat_enabled" value="0"{% if not S_MESSENGER_GROUP_CHAT_ENABLED %} checked="checked"{% endif %} /> {L_NO}</label></dd>
+		</dl>
+		<dl>
+			<dt><label for="messenger_group_chat_groups">{L_ACP_MESSENGER_GROUP_CHAT_GROUPS}{L_COLON}</label><br /><span>{L_ACP_MESSENGER_GROUP_CHAT_GROUPS_EXPLAIN}</span></dt>
+			<dd>
+				<select name="messenger_group_chat_groups[]" id="messenger_group_chat_groups" multiple="multiple" size="8">
+				<!-- BEGIN group_chat_groups -->
+					<option value="{group_chat_groups.GROUP_ID}"{% if group_chat_groups.S_SELECTED %} selected="selected"{% endif %}>{group_chat_groups.GROUP_NAME}</option>
+				<!-- END group_chat_groups -->
+				</select>
+			</dd>
+		</dl>
+	</fieldset>
+
+	<fieldset class="submit-buttons">
+		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
+		{S_FORM_TOKEN}
+	</fieldset>
+</form>
+
+<form id="acp_messenger_cleanup" method="post" action="{U_ACTION}">
+	<fieldset>
+		<legend>{L_ACP_MESSENGER_MAINTENANCE}</legend>
+		<p>{L_ACP_MESSENGER_CLEANUP_NOTIFICATIONS_EXPLAIN}</p>
+		<input type="hidden" name="cleanup_notifications" value="1" />
+		<fieldset class="submit-buttons">
+			<input class="button2" type="submit" value="{L_ACP_MESSENGER_CLEANUP_NOTIFICATIONS}" />
+			{S_FORM_TOKEN_CLEANUP}
+		</fieldset>
+	</fieldset>
+</form>
+
+{% INCLUDE 'overall_footer.html' %}

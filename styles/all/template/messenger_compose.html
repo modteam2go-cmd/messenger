@@ -1,0 +1,14 @@
+{% INCLUDECSS '@negentiendertien_messenger/messenger.css' %}
+{% INCLUDE 'overall_header.html' %}
+
+<div class="msgr-shell">
+	<header class="msgr-header">
+		<h1 class="msgr-title">{{ lang('MESSENGER_COMPOSE') }}</h1>
+	</header>
+	<div class="msgr-empty">
+		<p>{{ lang('MESSENGER_COMPOSE_HINT') }}</p>
+		<p><a href="{{ U_ROSTER }}" class="button button-secondary">{{ lang('MESSENGER_BACK') }}</a></p>
+	</div>
+</div>
+
+{% INCLUDE 'overall_footer.html' %}

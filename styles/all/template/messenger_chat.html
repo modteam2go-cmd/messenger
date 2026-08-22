@@ -1,0 +1,183 @@
+{% INCLUDECSS '@negentiendertien_messenger/messenger.css' %}
+{% INCLUDEJS '@negentiendertien_messenger/messenger.js' %}
+{% INCLUDE 'overall_header.html' %}
+
+<div class="msgr-shell msgr-shell-chat" data-msgr="chat" data-partner-id="{{ PARTNER_ID }}">
+
+	<header class="msgr-header msgr-chat-header">
+		<div class="msgr-breadcrumb">
+			<a href="{{ U_ROSTER }}" class="msgr-back"><i class="icon fa-arrow-left fa-fw"></i></a>
+			<span>{{ lang('MESSENGER_TITLE') }} / <a href="{{ U_PARTNER_PROFILE }}" class="msgr-partner-link"{% if PARTNER_COLOUR %} style="color: #{{ PARTNER_COLOUR }};"{% endif %}><strong>{{ PARTNER_NAME }}</strong></a></span>
+			<span class="msgr-stats">{{ lang('MESSENGER_MSG_COUNT', MSG_TOTAL) }}</span>
+		</div>
+
+		<a href="{{ U_PARTNER_PROFILE }}" class="msgr-partner-card" title="{{ PARTNER_NAME }}">
+			<div class="msgr-avatar-wrap msgr-avatar-lg">
+				{% if PARTNER_AVATAR %}{{ PARTNER_AVATAR }}{% else %}<span class="msgr-avatar-fallback"><i class="icon fa-user fa-fw"></i></span>{% endif %}
+			</div>
+			<div class="msgr-partner-info">
+				<h2{% if PARTNER_COLOUR %} style="color: #{{ PARTNER_COLOUR }};"{% endif %}>{{ PARTNER_NAME }}</h2>
+				<!-- IF PARTNER_PRESENCE --><p class="msgr-last-seen">{{ PARTNER_PRESENCE }}</p><!-- ENDIF -->
+			</div>
+		</a>
+
+		<div class="msgr-toolbar">
+			<div class="msgr-search-wrap">
+				<i class="icon fa-search fa-fw" aria-hidden="true"></i>
+				<input type="search" class="msgr-search msgr-search-chat" placeholder="{{ lang('MESSENGER_SEARCH_CHAT') }}" autocomplete="off" />
+			</div>
+		</div>
+	</header>
+
+	<div class="msgr-messages" id="msgr-messages">
+		<!-- IF S_HAS_OLDER -->
+		<div class="msgr-load-older" id="msgr-load-older">
+			<button type="button" class="button button-secondary msgr-load-older-btn" id="msgr-load-older-btn">
+				<i class="icon fa-chevron-up fa-fw" aria-hidden="true"></i>
+				<span>{{ lang('MESSENGER_LOAD_OLDER') }}</span>
+			</button>
+		</div>
+		<!-- ENDIF -->
+	<!-- BEGIN message_row -->
+		<div class="msgr-message{% if message_row.S_IS_OWN %} is-own{% else %} is-other{% endif %}" id="p{{ message_row.MSG_ID }}" data-msg-id="{{ message_row.MSG_ID }}" data-author-name="{{ message_row.AUTHOR_NAME|e('html_attr') }}" data-message-plain="{{ message_row.MESSAGE_PLAIN|e('html_attr') }}">
+			<div class="msgr-bubble">
+				<div class="msgr-bubble-menu">
+					<button type="button" class="msgr-msg-menu-btn" aria-haspopup="menu" aria-expanded="false" aria-label="{{ lang('MESSENGER_MESSAGE_ACTIONS') }}">
+						<i class="icon fa-chevron-down fa-fw" aria-hidden="true"></i>
+					</button>
+					<div class="msgr-msg-dropdown" role="menu" hidden>
+						<button type="button" role="menuitem" class="msgr-msg-menu-item msgr-msg-quote">
+							<i class="icon fa-quote-left fa-fw" aria-hidden="true"></i>
+							<span>{{ lang('MESSENGER_QUOTE') }}</span>
+						</button>
+						<!-- IF message_row.S_CAN_EDIT -->
+						<button type="button" role="menuitem" class="msgr-msg-menu-item msgr-msg-edit">
+							<i class="icon fa-pencil fa-fw" aria-hidden="true"></i>
+							<span>{{ lang('MESSENGER_EDIT_MESSAGE') }}</span>
+						</button>
+						<!-- ENDIF -->
+						<!-- IF message_row.S_IS_OWN -->
+						<button type="button" role="menuitem" class="msgr-msg-menu-item msgr-msg-delete is-danger">
+							<i class="icon fa-trash fa-fw" aria-hidden="true"></i>
+							<span>{{ lang('MESSENGER_DELETE_MESSAGE') }}</span>
+						</button>
+						<!-- ENDIF -->
+					</div>
+				</div>
+				<div class="msgr-bubble-content">{{ message_row.MESSAGE }}</div>
+				<footer class="msgr-bubble-footer">
+					<!-- IF message_row.S_IS_EDITED --><span class="msgr-edited-label">{{ lang('MESSENGER_EDITED') }}</span><!-- ENDIF -->
+					<time>{{ message_row.TIME }}</time>
+					<!-- IF message_row.S_IS_OWN -->
+					<span class="msgr-read-status{% if message_row.S_READ %} is-read{% elseif message_row.S_DELIVERED %} is-delivered{% endif %}">
+						<i class="icon fa-check fa-fw msgr-tick msgr-tick-1"></i>
+						<i class="icon fa-check fa-fw msgr-tick msgr-tick-2"></i>
+					</span>
+					<!-- ENDIF -->
+				</footer>
+			</div>
+		</div>
+	<!-- END message_row -->
+	</div>
+
+	<form class="msgr-compose" id="msgr-compose-form" autocomplete="off">
+		<div class="msgr-compose-tools-panel" id="msgr-compose-tools-panel">
+			<div class="msgr-compose-tools">
+				<!-- IF S_MESSENGER_SHOW_IMAGE_UPLOAD -->
+				<label class="msgr-tool-btn msgr-tool-upload" id="msgr-upload-btn" for="msgr-upload-input" title="{{ lang('MESSENGER_UPLOAD_IMAGE') }}" aria-label="{{ lang('MESSENGER_UPLOAD_IMAGE') }}">
+					<i class="icon fa-image fa-fw" aria-hidden="true"></i>
+				</label>
+				<!-- ENDIF -->
+				<button type="button" class="msgr-tool-btn" data-bbcode="b" title="Bold"><i class="icon fa-bold fa-fw"></i></button>
+				<button type="button" class="msgr-tool-btn" data-bbcode="i" title="Italic"><i class="icon fa-italic fa-fw"></i></button>
+				<button type="button" class="msgr-tool-btn" data-bbcode="url" title="Link"><i class="icon fa-link fa-fw"></i></button>
+				<button type="button" class="msgr-tool-btn" data-bbcode="quote" title="Quote"><i class="icon fa-quote-left fa-fw"></i></button>
+			</div>
+		</div>
+		<input type="file" id="msgr-upload-input" class="msgr-upload-input-native" accept="image/*" tabindex="-1">
+
+		<div class="msgr-emoji-panel" id="msgr-emoji-panel" hidden></div>
+
+		<!-- IF S_MESSENGER_GIPHY -->
+		<div class="msgr-giphy-panel" id="msgr-giphy-panel" hidden>
+			<div class="msgr-giphy-toolbar">
+				<div class="msgr-giphy-modes">
+					<button type="button" class="msgr-giphy-mode is-active" data-giphy-mode="gifs">{{ lang('MESSENGER_GIPHY_GIFS') }}</button>
+					<button type="button" class="msgr-giphy-mode" data-giphy-mode="stickers">{{ lang('MESSENGER_GIPHY_STICKERS') }}</button>
+				</div>
+				<div class="msgr-giphy-search-row">
+					<input type="search" class="msgr-giphy-search" id="msgr-giphy-search" placeholder="{{ lang('MESSENGER_GIPHY_SEARCH') }}" autocomplete="off" spellcheck="false" />
+					<button type="button" class="msgr-giphy-nav" id="msgr-giphy-less" title="{{ lang('MESSENGER_GIPHY_LESS') }}" hidden>
+						<i class="icon fa-minus fa-fw" aria-hidden="true"></i>
+					</button>
+					<button type="button" class="msgr-giphy-nav" id="msgr-giphy-more" title="{{ lang('MESSENGER_GIPHY_MORE') }}" hidden>
+						<i class="icon fa-plus fa-fw" aria-hidden="true"></i>
+					</button>
+				</div>
+			</div>
+			<div class="msgr-giphy-viewport" id="msgr-giphy-viewport"></div>
+		</div>
+		<!-- ENDIF -->
+
+		<div class="msgr-compose-attachments" id="msgr-compose-attachments" hidden></div>
+
+		<div class="msgr-compose-row">
+			<button type="button" class="msgr-attach-btn" id="msgr-attach-btn" aria-label="{{ lang('MESSENGER_ATTACH') }}" aria-expanded="false" aria-controls="msgr-compose-tools-panel" hidden>
+				<i class="icon fa-paperclip fa-fw" aria-hidden="true"></i>
+			</button>
+			<button type="button" class="msgr-emoji-btn" id="msgr-emoji-btn" aria-label="{{ lang('MESSENGER_EMOJI') }}" aria-expanded="false" aria-controls="msgr-emoji-panel" hidden>
+				<i class="icon fa-smile-o fa-fw" aria-hidden="true"></i>
+			</button>
+			<!-- IF S_MESSENGER_GIPHY -->
+			<button type="button" class="msgr-giphy-btn" id="msgr-giphy-btn" aria-label="{{ lang('MESSENGER_GIPHY') }}" aria-expanded="false" aria-controls="msgr-giphy-panel">
+				<span class="msgr-giphy-btn-label">GIF</span>
+			</button>
+			<!-- ENDIF -->
+			<textarea class="msgr-input" id="msgr-input" rows="1" placeholder="{{ lang('MESSENGER_PLACEHOLDER') }}"></textarea>
+			<button type="submit" class="msgr-send-btn" aria-label="{{ lang('MESSENGER_SEND') }}">
+				<span class="msgr-send-icon" aria-hidden="true"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" focusable="false"><path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z"/></svg></span><span class="msgr-send-label">{{ lang('MESSENGER_SEND') }}</span>
+			</button>
+		</div>
+	</form>
+
+</div>
+
+<script>
+window.MESSENGER_CONFIG = {
+	pollInterval: {{ MESSENGER_POLL_INTERVAL }},
+	partnerId: {{ PARTNER_ID }},
+	chatType: 'direct',
+	apiChat: '{{ U_MESSENGER_API_CHAT|e('js') }}',
+	apiSend: '{{ U_MESSENGER_API_SEND|e('js') }}',
+	apiUpload: '{{ U_MESSENGER_API_UPLOAD|e('js') }}',
+	imageUploadEnabled: {% if S_MESSENGER_SHOW_IMAGE_UPLOAD %}true{% else %}false{% endif %},
+	uploadHash: '{{ MESSENGER_UPLOAD_HASH|e('js') }}',
+	apiPoll: '{{ U_MESSENGER_API_POLL|e('js') }}',
+	apiRead: '{{ U_MESSENGER_API_READ|e('js') }}',
+	sendHash: '{{ MESSENGER_SEND_HASH|e('js') }}',
+	lastMsgId: {{ LAST_MSG_ID }},
+	oldestMsgId: {{ OLDEST_MSG_ID }},
+	hasOlder: {% if S_HAS_OLDER %}true{% else %}false{% endif %},
+	loadOlderLimit: 20,
+	smilies: {{ MESSENGER_SMILIES_JSON }},
+	giphy: {{ MESSENGER_GIPHY_JSON }},
+	labels: {
+		uploadImage: '{{ lang('MESSENGER_UPLOAD_IMAGE')|e('js') }}',
+		removeAttachment: '{{ lang('MESSENGER_REMOVE_ATTACHMENT')|e('js') }}',
+		uploading: '{{ lang('MESSENGER_UPLOADING')|e('js') }}',
+		uploadFailed: '{{ lang('MESSENGER_UPLOAD_FAILED')|e('js') }}',
+		uploadImagesOnly: '{{ lang('MESSENGER_UPLOAD_IMAGES_ONLY')|e('js') }}',
+		giphy: '{{ lang('MESSENGER_GIPHY')|e('js') }}',
+		giphySearch: '{{ lang('MESSENGER_GIPHY_SEARCH')|e('js') }}',
+		giphyGifs: '{{ lang('MESSENGER_GIPHY_GIFS')|e('js') }}',
+		giphyStickers: '{{ lang('MESSENGER_GIPHY_STICKERS')|e('js') }}',
+		giphyMore: '{{ lang('MESSENGER_GIPHY_MORE')|e('js') }}',
+		giphyLess: '{{ lang('MESSENGER_GIPHY_LESS')|e('js') }}',
+		giphyEmpty: '{{ lang('MESSENGER_GIPHY_EMPTY')|e('js') }}',
+		giphyNoKey: '{{ lang('MESSENGER_GIPHY_NO_KEY')|e('js') }}',
+		giphyFailed: '{{ lang('MESSENGER_GIPHY_FAILED')|e('js') }}'
+	}
+};
+</script>
+
+{% INCLUDE 'overall_footer.html' %}
