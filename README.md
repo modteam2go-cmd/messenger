@@ -4,15 +4,25 @@ A modern messenger-style private messaging extension for **phpBB 3.3**.
 
 It replaces the classic PM inbox with a chat-style interface: conversation list, live polling, smilies, image attachments, optional group chats, and relative timestamps that update while you stay on the page.
 
+**Installation instructions, support, feedback, and suggestions:**  
+➡️ **[Messenger topic on phpBB.com](https://www.phpbb.com/community/viewtopic.php?t=2672440)**
+
+> GitHub Issues are disabled for this repository. Please use the phpBB.com topic above for bug reports, questions, and code improvement ideas.
+
 ---
 
 ## Support & feedback
 
-**GitHub Issues are disabled** for this repository.
+Please use the official thread on phpBB.com for everything related to this extension:
 
-Please post support questions, bug reports, and suggestions for improvements on phpBB.com:
+- **[Messenger support & discussion on phpBB.com](https://www.phpbb.com/community/viewtopic.php?t=2672440)**
 
-- **[Messenger support topic on phpBB.com](https://www.phpbb.com/community/viewtopic.php?t=2672440)**
+That includes:
+
+- Installation help
+- Configuration questions
+- Bug reports
+- Feedback and suggestions for improvements
 
 General phpBB extension help:
 
@@ -28,6 +38,9 @@ General phpBB extension help:
 ---
 
 ## Installation
+
+> Prefer the walkthrough and discussion on phpBB.com?  
+> See the **[Messenger topic](https://www.phpbb.com/community/viewtopic.php?t=2672440)**.
 
 > Important: the folder structure must match the vendor/package name exactly.  
 > If the files end up in the wrong place, phpBB will not detect the extension.
