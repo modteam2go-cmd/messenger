@@ -289,7 +289,9 @@
 			'</button>';
 		}
 
-		if (message.is_own) {
+		var canDelete = !!(cfg.allowDeleteMe || cfg.allowDeleteBoth);
+		var canDeleteThis = canDelete && (message.is_own || cfg.chatType !== 'group');
+		if (canDeleteThis) {
 			menu += '<button type="button" role="menuitem" class="msgr-msg-menu-item msgr-msg-delete is-danger">' +
 				'<i class="icon fa-trash fa-fw" aria-hidden="true"></i>' +
 				'<span>' + escapeAttr(labels.deleteMessage || 'Delete') + '</span>' +
@@ -1420,11 +1422,18 @@
 		title.textContent = (labels.deleteChatsConfirm || 'Delete %d selected chats?').replace('%d', items.length);
 		cancelBtn.textContent = labels.cancel || 'Cancel';
 		meBtn.textContent = labels.deleteMe || 'Delete for me';
+		var hideMe = !cfg.allowDeleteMe;
+		meBtn.hidden = hideMe;
+		meBtn.style.display = hideMe ? 'none' : '';
 		if (bothBtn) {
 			bothBtn.textContent = labels.deleteBoth || 'Delete for both';
 			var hideBoth = !partnerIds.length || !cfg.allowDeleteBoth;
 			bothBtn.hidden = hideBoth;
 			bothBtn.style.display = hideBoth ? 'none' : '';
+		}
+
+		if (hideMe && (!bothBtn || bothBtn.hidden)) {
+			return;
 		}
 
 		modal.hidden = false;
@@ -1662,14 +1671,17 @@
 	function buildActionButtons(chat) {
 		var labels = cfg.labels || {};
 		var actions = [];
+		var canDelete = !!(cfg.allowDeleteMe || cfg.allowDeleteBoth);
 
 		if (chat.chat_type === 'group') {
-			actions.push({
-				id: 'delete',
-				label: labels.groupLeave || labels.deleteChat || 'Delete',
-				icon: 'fa-trash',
-				danger: true
-			});
+			if (canDelete) {
+				actions.push({
+					id: 'delete',
+					label: labels.groupLeave || labels.deleteChat || 'Delete',
+					icon: 'fa-trash',
+					danger: true
+				});
+			}
 			return actions;
 		}
 
@@ -1689,12 +1701,14 @@
 			});
 		}
 
-		actions.push({
-			id: 'delete',
-			label: labels.deleteChat || 'Delete',
-			icon: 'fa-trash',
-			danger: true
-		});
+		if (canDelete) {
+			actions.push({
+				id: 'delete',
+				label: labels.deleteChat || 'Delete',
+				icon: 'fa-trash',
+				danger: true
+			});
+		}
 
 		return actions;
 	}
@@ -1858,12 +1872,19 @@
 		meBtn.textContent = isGroup
 			? (labels.groupLeave || labels.deleteMe || 'Delete')
 			: (labels.deleteMe || 'Delete for me');
+		var hideMe = !cfg.allowDeleteMe;
+		meBtn.hidden = hideMe;
+		meBtn.style.display = hideMe ? 'none' : '';
 		if (bothBtn) {
 			bothBtn.textContent = labels.deleteBoth || 'Delete for both';
 			var hideBoth = isGroup || !cfg.allowDeleteBoth;
 			bothBtn.hidden = hideBoth;
 			// phpBB button CSS (display: inline-block) overrules the hidden attribute.
 			bothBtn.style.display = hideBoth ? 'none' : '';
+		}
+
+		if (hideMe && (!bothBtn || bothBtn.hidden)) {
+			return;
 		}
 
 		modal.hidden = false;
@@ -3773,9 +3794,17 @@
 		title.textContent = labels.deleteMessageConfirm || 'Delete this message?';
 		cancelBtn.textContent = labels.cancel || 'Cancel';
 		meBtn.textContent = labels.deleteMe || 'Delete for me';
+		var hideMe = !cfg.allowDeleteMe;
+		meBtn.hidden = hideMe;
+		meBtn.style.display = hideMe ? 'none' : '';
 		if (bothBtn) {
 			bothBtn.textContent = labels.deleteBoth || 'Delete for both';
 			bothBtn.hidden = !cfg.allowDeleteBoth;
+			bothBtn.style.display = !cfg.allowDeleteBoth ? 'none' : '';
+		}
+
+		if (hideMe && (!bothBtn || bothBtn.hidden)) {
+			return;
 		}
 
 		modal.hidden = false;

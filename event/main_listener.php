@@ -294,6 +294,14 @@ class main_listener implements EventSubscriberInterface
             'lang' => 'ACL_U_MESSENGER_USE',
             'cat'  => 'pm',
         ];
+        $permissions['u_messenger_delete_me'] = [
+            'lang' => 'ACL_U_MESSENGER_DELETE_ME',
+            'cat'  => 'pm',
+        ];
+        $permissions['u_messenger_delete_both'] = [
+            'lang' => 'ACL_U_MESSENGER_DELETE_BOTH',
+            'cat'  => 'pm',
+        ];
         $event['permissions'] = $permissions;
     }
 

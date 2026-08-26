@@ -511,6 +511,8 @@ class api_controller
         $this->assert_can_use();
 
         $delete_for_both = $this->request->variable('for_both', 0) === 1;
+        $this->assert_can_delete($delete_for_both);
+
         $deleted = $this->message->delete_message(
             (int) $this->user->data['user_id'],
             (int) $msg_id,
@@ -586,6 +588,8 @@ class api_controller
         $this->assert_can_use();
 
         $delete_for_both = $this->request->variable('for_both', 0) === 1;
+        $this->assert_can_delete($delete_for_both);
+
         $this->message->delete_chat(
             (int) $this->user->data['user_id'],
             (int) $partner_id,
@@ -601,6 +605,8 @@ class api_controller
 
         $user_id = (int) $this->user->data['user_id'];
         $delete_for_both = $this->request->variable('for_both', 0) === 1;
+        $this->assert_can_delete($delete_for_both);
+
         $partner_ids = $this->get_post_int_array('partner_ids');
         $group_ids = $this->get_post_int_array('group_ids');
 
@@ -919,6 +925,24 @@ class api_controller
         if (!$this->message->can_send_message())
         {
             throw new \phpbb\exception\http_exception(403, 'MESSENGER_NO_SEND');
+        }
+    }
+
+    protected function assert_can_delete($delete_for_both = false)
+    {
+        if ($delete_for_both)
+        {
+            if (!$this->message->can_delete_for_both())
+            {
+                throw new \phpbb\exception\http_exception(403, 'MESSENGER_NO_DELETE_BOTH');
+            }
+
+            return;
+        }
+
+        if (!$this->message->can_delete_for_me())
+        {
+            throw new \phpbb\exception\http_exception(403, 'MESSENGER_NO_DELETE');
         }
     }
 

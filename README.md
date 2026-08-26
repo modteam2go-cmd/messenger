@@ -119,11 +119,15 @@ Also do a hard refresh in your browser (`Ctrl+F5`) so updated JavaScript/CSS is 
 
 ### Permissions
 
-Grant users/groups the messenger permission:
+Grant users/groups the messenger permissions:
 
 - **Can use the messenger** (`u_messenger_use`)
+- **Can delete messenger messages for self** (`u_messenger_delete_me`)
+- **Can delete messenger messages for both users** (`u_messenger_delete_both`) — including messages sent by the other person
 
-Users without this permission keep the standard phpBB private message system.
+“Delete for both” also requires the ACP board setting **Allow delete for both users** to be enabled. Delete for me hides a message from your own chat only; delete for both hides it for both participants.
+
+Users without `u_messenger_use` keep the standard phpBB private message system.
 
 ---
 

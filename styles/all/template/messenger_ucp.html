@@ -45,7 +45,7 @@
 		<h3 class="msgr-modal-title" id="msgr-delete-modal-title"></h3>
 		<div class="msgr-modal-actions">
 			<button type="button" class="button button-secondary" id="msgr-delete-cancel"></button>
-			<button type="button" class="button button-secondary msgr-btn-danger" id="msgr-delete-me"></button>
+			<button type="button" class="button button-secondary msgr-btn-danger" id="msgr-delete-me"{% if not S_MESSENGER_ALLOW_DELETE_ME %} hidden{% endif %}></button>
 			<button type="button" class="button button-secondary msgr-btn-danger" id="msgr-delete-both"{% if not S_MESSENGER_ALLOW_DELETE_BOTH %} hidden{% endif %}></button>
 		</div>
 	</div>

@@ -56,7 +56,7 @@
 							<span>{{ lang('MESSENGER_EDIT_MESSAGE') }}</span>
 						</button>
 						<!-- ENDIF -->
-						<!-- IF message_row.S_IS_OWN -->
+						<!-- IF S_MESSENGER_ALLOW_DELETE_ME or S_MESSENGER_ALLOW_DELETE_BOTH -->
 						<button type="button" role="menuitem" class="msgr-msg-menu-item msgr-msg-delete is-danger">
 							<i class="icon fa-trash fa-fw" aria-hidden="true"></i>
 							<span>{{ lang('MESSENGER_DELETE_MESSAGE') }}</span>

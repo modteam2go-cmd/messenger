@@ -21,6 +21,7 @@ window.MESSENGER_CONFIG = {
 	apiDeleteMessage: '{{ U_MESSENGER_API_DELETE_MESSAGE|e('js') }}',
 	apiEditMessage: '{{ U_MESSENGER_API_EDIT_MESSAGE|e('js') }}',
 	apiReadTemplate: '{{ U_MESSENGER_API_READ_TEMPLATE|e('js') }}',
+	allowDeleteMe: {% if S_MESSENGER_ALLOW_DELETE_ME %}true{% else %}false{% endif %},
 	allowDeleteBoth: {% if S_MESSENGER_ALLOW_DELETE_BOTH %}true{% else %}false{% endif %},
 	sendHash: '{{ MESSENGER_SEND_HASH|e('js') }}',
 	labels: {

@@ -413,7 +413,8 @@ class display_service
             'U_MESSENGER_API_READ_TEMPLATE' => $this->helper->route('negentiendertien_messenger_api_read', [
                 'partner_id' => 0,
             ]),
-            'S_MESSENGER_ALLOW_DELETE_BOTH' => !empty($this->config['messenger_allow_delete_for_both']),
+            'S_MESSENGER_ALLOW_DELETE_ME'   => $this->message->can_delete_for_me(),
+            'S_MESSENGER_ALLOW_DELETE_BOTH' => $this->message->can_delete_for_both(),
             'MESSENGER_SEND_HASH'          => generate_link_hash('messenger_send'),
             'NOTIFICATIONS_COUNT'           => $this->message->get_unread_notifications_count(),
             'UNREAD_PM_COUNT'               => (int) $this->user->data['user_unread_privmsg'],

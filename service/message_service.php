@@ -106,6 +106,18 @@ class message_service
         return $this->can_use_messenger() && $this->auth->acl_get('u_sendpm');
     }
 
+    public function can_delete_for_me()
+    {
+        return $this->can_use_messenger() && $this->auth->acl_get('u_messenger_delete_me');
+    }
+
+    public function can_delete_for_both()
+    {
+        return $this->can_use_messenger()
+            && !empty($this->config['messenger_allow_delete_for_both'])
+            && $this->auth->acl_get('u_messenger_delete_both');
+    }
+
     public function can_upload_images()
     {
         return $this->can_send_message() && $this->attachment->can_upload_images();
@@ -714,28 +726,16 @@ class message_service
         }
     }
 
+    /**
+     * Hide a message the user can see. Delete-for-both also hides the partner copy,
+     * including messages written by the other person.
+     */
     public function delete_message($user_id, $msg_id, $delete_for_both = false)
     {
         $user_id = (int) $user_id;
         $msg_id  = (int) $msg_id;
 
         if ($user_id <= 0 || $msg_id <= 0)
-        {
-            return false;
-        }
-
-        $sql = sprintf(
-            'SELECT author_id
-             FROM %s
-             WHERE msg_id = %d',
-            $this->t_privmsgs,
-            $msg_id
-        );
-        $result = $this->db->sql_query($sql);
-        $row = $this->db->sql_fetchrow($result);
-        $this->db->sql_freeresult($result);
-
-        if (!$row || (int) $row['author_id'] !== $user_id)
         {
             return false;
         }
